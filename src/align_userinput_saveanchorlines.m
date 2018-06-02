@@ -41,9 +41,14 @@ else
     image(abs(profiles_align));
 end
 
-% maxprof = squeeze(max(max(profiles_align)))/160;
-% grayscaleon = 1;
-% setcolormap(grayscaleon,maxprof);
+% following is not needed within SAFA GUI, but sets defaults correctly 
+%  if this function align_userinput_saveanchorlines.m is called by itself.
+if isempty(maxprof) maxprof = squeeze(max(max(profiles_align)))/160; end;
+if isempty( grayscaleon)  
+    grayscaleon = 1;
+    setcolormap(grayscaleon,maxprof);
+end
+
 set(gca,'xtick',(numfinebins+1)/2:numfinebins:numlanes,'xticklabel',1:numlanes/numfinebins,'xminortick','on');
 
 %If there were predefined anchorlines, draw them too -- as horizontal
