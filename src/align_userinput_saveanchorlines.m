@@ -108,8 +108,14 @@ while (stopalign == 0)
                 %    newly drawn anchorlines ("alignmentpoints"). 
                 % They need to be treated separately.
                     
-                [closeoldanchor, anchornum] = min( (anchorlines(:,round(xselpick)) - yselpick).^2);
+                % prevent fail if 'e' is pressed and there are no
+                % anchorlines:
+                closeoldanchor = Profile_Size^2 + 1;
+                if length( anchorlines ) > 0
+                    [closeoldanchor, anchornum] = min( (anchorlines(:,round(xselpick)) - yselpick).^2);
+                end
                 closenewanchor = Profile_Size^2;
+                
                 if (count>0) [closenewanchor, anchornum_new] = min( (alignmentpoints(:,round(xselpick)) - yselpick).^2); end
                 if (closeoldanchor < closenewanchor) %old anchorline closer
 %                        set(h_old(anchornum),'visible','off');
