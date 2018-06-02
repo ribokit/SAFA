@@ -23,12 +23,12 @@ while (finishedline == 0)
     [xsel(count),ysel(count),button]=ginput(1);
     if(button==2) 
         count=count-1; count = max(count,1);
-        if (count>1) set(h(count),'Visible','off');end
+        if (count>1) set(h{count},'Visible','off');end
     end;
     
     if count==1; ysel(1)=0; plot(xsel(1),ysel(1),'ro');
     elseif (button==1)
-        h(count)= plot([xsel(count-1) xsel(count)],[ysel(count-1) ysel(count)],'r'); 
+        h{count}= plot([xsel(count-1) xsel(count)],[ysel(count-1) ysel(count)],'r'); 
         if ysel(count) == ysel(count-1) ysel(count) = ysel(count-1)+0.5;    end;
         pickedpeak=1;  count=count+1;
     end    
@@ -55,11 +55,11 @@ ysel(count)=numypixels;
 lastsymbol = plot(xsel(count),ysel(count),'ro');
 
 if (count>1) 
-    set(h(count),'visible','off');
-    h(count)= plot([xsel(count-1) xsel(count)],[ysel(count-1) ysel(count)],'r'); 
+    set(h{count},'visible','off');
+    h{count}= plot([xsel(count-1) xsel(count)],[ysel(count-1) ysel(count)],'r'); 
     if (plottheline == 0) 
         for i=1:count
-            set(h(i),'visible','off');
+            set(h{i},'visible','off');
             set(firstsymbol,'visible','off');
             set(lastsymbol,'visible','off');
         end
