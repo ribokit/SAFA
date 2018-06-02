@@ -3,7 +3,8 @@ function [imagey, gelbounds] = readingel(filename,pointertoaxis,gelbounds);
 % Reads in the image quant format and allows
 % the user to crop it to the useful region, usually.
 % right above the main (uncleaved) band and down to the last band.
-%   Rhiju Das, August 29 2003.
+%  (C) Rhiju Das, August 29 2003.
+%  (C) Modernize to new MATLAB machines: R. Das, 2018
 ContrastScale = sqrt(2);
 global maxprof;
 global grayscaleon;
@@ -12,7 +13,9 @@ global renderSqrt;
 hold off
 x=imread(filename);
 
-y = 2^16 - double(x);
+%y = 2^16 - double(x);
+y = double(x);
+
 y=y/256; %matlab only likes to plot values from 0 to 256, 16-bit goes to 65536!
 y= y.^2 /4;
 
