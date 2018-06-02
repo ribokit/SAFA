@@ -5,11 +5,10 @@ Alain Laederach, Rhiju Das, Sam Pearlman, Dan Herschlag, Russ Altman
 Ported to a new GitHub repository for modernization by R. Das, Stanford University.
 
 ## Getting Started
-Check out User Guide at [SAFAUserGuide\_v1_1s.pdf](SAFAUserGuide_v1_1s.pdf)
-
-## Tips
-* The software package does not appear to be working on current MATLAB -- we'll post soon information
-  SAFA going on the latest computers...
+* Install MATLAB 2014 or later.
+* In MATLAB, find the menu item "Environment/ Set Path..."  and add the the directory `SAFA/src`.
+* Check out the example files in `SAFA/example`
+* Better docs are needed -- for now, check out User Guide at [SAFAUserGuide\_v1_1s.pdf](SAFAUserGuide_v1_1s.pdf), which will be updated pretty soon.
 * In the meanwhile, if you have advice for other SAFA users or questions, contact us at ribokit.info@gmail.com.
 
 ## Reference
