@@ -14,7 +14,8 @@ numxpixels=size(imx,2);
 title([...
         'left                : next point of anchorline \newline',...
         'middle (opt-click)  : undo point \newline',...
-        'right  (apple-click): finished']);
+        'right  (apple-click): finished \newline',...
+        'R: refine last point to local maximum']);
 count=1;button=0;
 if (nargin>2) xsel(1) = 0; ysel(1) = yselpick; count=2; firstsymbol=plot(1,ysel(1),'ro');end;
 
@@ -44,6 +45,19 @@ while (finishedline == 0)
             case {'c','C'}
                 grayscaleon = 1 - grayscaleon;
                 setcolormap(grayscaleon, maxprof);    
+            case {'r','R'}
+                % experimental option, useful for super-strong bands at top
+                % of gel.
+                count = count - 1;
+                set( h{ count } , 'Visible','off');
+                range_min = max(round(ysel(count)) -100,1);
+                range_max = min(round(ysel(count)) +100, size(imx,1));
+                range_bins = [range_min:range_max];
+                [dummy, maxindex ] = max( imx( range_bins, ...
+                    round( xsel(count) ) ) );
+                ysel( count ) = range_bins( maxindex );
+                h{count}= plot([xsel(count-1) xsel(count)],[ysel(count-1) ysel(count)],'r');
+                count = count + 1;
         end
     end
 end
