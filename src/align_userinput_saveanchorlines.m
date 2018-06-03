@@ -104,7 +104,7 @@ while (stopalign == 0)
                 setcolormap(grayscaleon, maxprof);    
             case {'e','E'}
                 % There are two kinds of lines that may need to be erased:
-                %   already straightebed anchorlines and
+                %   already straightened anchorlines and
                 %    newly drawn anchorlines ("alignmentpoints"). 
                 % They need to be treated separately.
                     
