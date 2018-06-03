@@ -22,7 +22,7 @@ currentaxis = [1 numprofiles_fine 1 Profile_Size];
 axis(currentaxis);zoomedin = 0;
 stopalign = 0;
 plottitle = [...
-        'left button: start anchorline       right button (apple-click): zoom in/out \newline',...
+        'left button: start anchorline       right button (ctrl-click): zoom in/out \newline',...
         '1,2,C: adjust colorscale        Q: do alignment            Z:finished'];
 
 numanchorlines = size(anchorlines,1);
@@ -41,9 +41,14 @@ else
     image(abs(profiles_align));
 end
 
-% maxprof = squeeze(max(max(profiles_align)))/160;
-% grayscaleon = 1;
-% setcolormap(grayscaleon,maxprof);
+% following is not needed within SAFA GUI, but sets defaults correctly 
+%  if this function align_userinput_saveanchorlines.m is called by itself.
+if isempty(maxprof) maxprof = squeeze(max(max(profiles_align)))/160; end;
+if isempty( grayscaleon)  
+    grayscaleon = 1;
+    setcolormap(grayscaleon,maxprof);
+end
+
 set(gca,'xtick',(numfinebins+1)/2:numfinebins:numlanes,'xticklabel',1:numlanes/numfinebins,'xminortick','on');
 
 %If there were predefined anchorlines, draw them too -- as horizontal
@@ -99,12 +104,18 @@ while (stopalign == 0)
                 setcolormap(grayscaleon, maxprof);    
             case {'e','E'}
                 % There are two kinds of lines that may need to be erased:
-                %   already straightebed anchorlines and
+                %   already straightened anchorlines and
                 %    newly drawn anchorlines ("alignmentpoints"). 
                 % They need to be treated separately.
                     
-                [closeoldanchor, anchornum] = min( (anchorlines(:,round(xselpick)) - yselpick).^2);
+                % prevent fail if 'e' is pressed and there are no
+                % anchorlines:
+                closeoldanchor = Profile_Size^2 + 1;
+                if length( anchorlines ) > 0
+                    [closeoldanchor, anchornum] = min( (anchorlines(:,round(xselpick)) - yselpick).^2);
+                end
                 closenewanchor = Profile_Size^2;
+                
                 if (count>0) [closenewanchor, anchornum_new] = min( (alignmentpoints(:,round(xselpick)) - yselpick).^2); end
                 if (closeoldanchor < closenewanchor) %old anchorline closer
 %                        set(h_old(anchornum),'visible','off');

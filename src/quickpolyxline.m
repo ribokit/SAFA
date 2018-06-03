@@ -3,6 +3,7 @@ function [xsel,ysel,pickedpeak,grayscaleon, maxprof] = quickpolyxline(imx,dontpl
 %   If any number for dontplotthegel is inputed, routine doesn't
 %   replot the gel.
 %    Rhiju Das, August 29 2003.
+% 'R': Refine option from a 2011 function, committed in 2018.
 
 pickedpeak = 0;
 if (nargin<1) hold off;figure(1);image(imx);end;
@@ -13,12 +14,14 @@ numpixels=size(imx,1);
 numxpixels=size(imx,2);
 title([...
         'left                : next point of anchorline \newline',...
-        'middle (opt-click)  : undo point \newline',...
-        'right  (apple-click): finished']);
+        'middle (shift-click)  : undo point \newline',...
+        'right  (ctrl-click): finished \newline',...
+        'R: refine last point to local maximum']);
 count=1;button=0;
 if (nargin>2) xsel(1) = 0; ysel(1) = yselpick; count=2; firstsymbol=plot(1,ysel(1),'ro');end;
 
 finishedline = 0;
+h = {};
 while (finishedline == 0)
     [xsel(count),ysel(count),button]=ginput(1);
     if(button==2) count=count-1; count = max(count,1);
@@ -44,6 +47,23 @@ while (finishedline == 0)
             case {'c','C'}
                 grayscaleon = 1 - grayscaleon;
                 setcolormap(grayscaleon, maxprof);    
+            case {'r','R'}
+                % experimental option, useful for super-strong bands at top
+                % of gel.
+                if count > 1 & length(h) >= count - 1
+                    count = count - 1;
+                    set( h{ count } , 'Visible','off');
+                    range_min = max(round(ysel(count)) -100,1);
+                    range_max = min(round(ysel(count)) +100, size(imx,1));
+                    range_bins = [range_min:range_max];
+                    xsel
+                    count
+                    [dummy, maxindex ] = max( imx( range_bins, ...
+                        round( xsel(count) ) ) );
+                    ysel( count ) = range_bins( maxindex );
+                    h{count}= plot([xsel(count-1) xsel(count)],[ysel(count-1) ysel(count)],'r');
+                    count = count + 1;
+                end
         end
     end
 end

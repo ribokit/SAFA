@@ -11,10 +11,7 @@ count=0;
 %numlanes
 for k=1:numfinebins:numlanes
     count=count+1;
-    profiles_combine(:,count) = zeros(numpixels,1);
-    for j=0:numfinebins-1
-        profiles_combine(:,count) = profiles_combine(:,count) + profiles_align(:,k+j); 
-    end
+    profiles_combine(:,count) = sum( profiles_align( :, k + [0:numfinebins-1]) ,2);
 end
 
 %figure(1)
